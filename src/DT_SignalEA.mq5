@@ -223,16 +223,16 @@ bool WriteSignalToCsv(PATTERN_TYPE pt, double body1, double body2)
    string   timeStr    = StringSubstr(TimeToString(barTime, TIME_DATE|TIME_MINUTES), 11); // "HH:MM" / Ora
    string   patternStr = (pt == BULLISH ? "BULLISH" : "BEARISH");                         // Pattern label / Etichetta pattern
 
-   int written = FileWrite(h,
-                           dateStr, timeStr, Symbol(), "M15", patternStr,
-                           DoubleToString(body1, 1),
-                           DoubleToString(body2, 1),
-                           DoubleToString(PipThreshold, 1)); // Write signal row / Scrivi riga segnale
+   uint written = FileWrite(h,
+                            dateStr, timeStr, Symbol(), "M15", patternStr,
+                            DoubleToString(body1, 1),
+                            DoubleToString(body2, 1),
+                            DoubleToString(PipThreshold, 1)); // Write signal row / Scrivi riga segnale
 
    if(written > 0) FileFlush(h); // Flush to disk before close — Task 2.6 / Scrivi su disco prima di chiudere
    FileClose(h); // Release immediately / Rilascia immediatamente
 
-   if(written <= 0) // Write failed / Scrittura fallita
+   if(written == 0) // Write failed / Scrittura fallita
      {
       UpdateStatusLabel("DT Signal EA — CSV ERROR", clrOrange); // Warn trader / Avvisa trader
       return(false);
